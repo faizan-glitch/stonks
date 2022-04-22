@@ -1,8 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net"
+	"time"
+
+	"github.com/faizan-glitch/stonks/pkg/stocks"
 )
 
 func main() {
@@ -39,11 +43,33 @@ func handler(c net.Conn) {
 		log.Println("Failed to read from connection:", err.Error())
 	}
 
-	for {
-		_, err := c.Write([]byte("Hello!\n"))
-		log.Println("Writing to connection")
+	t := time.NewTicker(1 * time.Second)
+
+	defer t.Stop()
+
+	stk := stocks.Stock{
+		Time:   time.Now(),
+		Symbol: "AAPL",
+		Open:   100.0,
+		High:   100.0,
+		Low:    100.0,
+		Close:  100.0,
+		Volume: 100,
+	}
+
+	for range t.C { // t.C is a channel so we can range over it
+		stk.Update()
+
+		b, err := json.MarshalIndent(stk, "", "  ")
+
 		if err != nil {
-			log.Println("byeee 👋")
+			log.Println("Failed to marshal stock:", err.Error())
+		}
+
+		_, err = c.Write(b)
+
+		if err != nil {
+			log.Println("A connection was broken")
 			return
 		}
 	}
