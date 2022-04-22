@@ -11,3 +11,7 @@ type Stock struct {
 	Close  float64   `json:"close"`
 	Volume int       `json:"volume"`
 }
+
+func (s *Stock) Update() {
+	// TODO: Update the stock
+}
