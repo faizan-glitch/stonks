@@ -20,19 +20,20 @@ func (s *Stock) Update() {
 
 	s.Time = time.Now()
 
-	s.Symbol = generateRandomSymbol()
+	max, min := s.Close+(s.Close*0.1), s.Close-(s.Close*0.1)
 
-	// Todo: Calculate s.Close according to the requirements
+	s.Close = rand.Float64()*(max-min) + min
 
 	if s.Close > s.High {
 		s.High = s.Close
 	} else {
 		s.Low = s.Close
 	}
+
 	s.Volume = rand.Intn(1000)
 }
 
-func generateRandomSymbol() string {
+func RandomSymbol() string {
 	sym := []byte{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}
 
 	output := make([]byte, 4)
