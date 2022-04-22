@@ -60,7 +60,7 @@ func handler(c net.Conn, ch *cache.Cache) {
 		log.Println("Failed to read from connection:", err.Error())
 	}
 
-	t := time.NewTicker(1 * time.Second)
+	t := time.NewTicker(100 * time.Millisecond)
 
 	defer t.Stop()
 
