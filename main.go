@@ -39,5 +39,12 @@ func handler(c net.Conn) {
 		log.Println("Failed to read from connection:", err.Error())
 	}
 
-	c.Write([]byte("Hello World!\n"))
+	for {
+		_, err := c.Write([]byte("Hello!\n"))
+		log.Println("Writing to connection")
+		if err != nil {
+			log.Println("byeee 👋")
+			return
+		}
+	}
 }
