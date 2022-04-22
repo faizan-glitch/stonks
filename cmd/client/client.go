@@ -20,14 +20,17 @@ func main() {
 		log.Fatal("Failed to write to server:", err.Error())
 	}
 
-	buf := make([]byte, 1024)
+	// keep reading the response from the server
+	for {
+		buf := make([]byte, 1024)
 
-	_, err = conn.Read(buf)
+		_, err = conn.Read(buf)
 
-	if err != nil {
-		log.Fatal("Failed to read from server:", err.Error())
+		if err != nil {
+			log.Fatal("Failed to read from server:", err.Error())
+		}
+
+		log.Println(string(buf))
 	}
-
-	log.Println(string(buf))
 
 }
