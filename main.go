@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 )
@@ -25,6 +24,20 @@ func main() {
 			continue
 		}
 
-		fmt.Println(conn)
+		go handler(conn)
 	}
+}
+
+func handler(c net.Conn) {
+	buf := make([]byte, 1024)
+
+	defer c.Close()
+
+	_, err := c.Read(buf)
+
+	if err != nil {
+		log.Println("Failed to read from connection:", err.Error())
+	}
+
+	c.Write([]byte("Hello World!\n"))
 }
